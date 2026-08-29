@@ -1,0 +1,149 @@
+{
+  "meta": {
+    "note": "SAMPLE DATASET — most rows are placeholder/illustrative structure for the ingestion pipeline. Rows flagged \"real\": true carry a verified public source and were checked at generation time. Everything else must be replaced by the real ingestion pipeline described in METHODOLOGY.md before this is shown to an investor.",
+    "generated": "2026-08-29"
+  },
+  "companies": [
+    {
+      "id": "harmattan-ai",
+      "name": "Harmattan AI",
+      "country": "France",
+      "founded": 2024,
+      "category": "AI & Autonomy",
+      "stage": "Series B",
+      "lastRoundEUR": 184000000,
+      "lastRoundDate": "2026-01-12",
+      "leadInvestor": "Dassault Aviation",
+      "real": true,
+      "sourceUrl": "https://www.dassault-aviation.com/en/group/press/press-kits/harmattan-ais-200-million-series-b-led-by-dassault-aviation/",
+      "sourceLabel": "Dassault Aviation official press release, Jan 12, 2026: $200M Series B at a $1.4B valuation",
+      "confidence": "high, verified against the official Dassault Aviation press release and cross-checked with TechCrunch and Defense News"
+    },
+    {
+      "id": "helsing",
+      "name": "Helsing",
+      "country": "Germany",
+      "founded": 2021,
+      "category": "AI & Battle Management",
+      "stage": "Government contract (not a funding round)",
+      "lastRoundEUR": 269000000,
+      "lastRoundDate": "2026-02-25",
+      "leadInvestor": "German Federal Ministry of Defence, Bundeswehr budget committee. HX-2 loitering munitions, initial tranche, framework since capped at EUR 2B combined with Stark Defence",
+      "real": true,
+      "sourceUrl": "https://www.defensenews.com/global/europe/2026/02/26/once-reluctant-germany-goes-big-on-one-way-attack-drones/",
+      "sourceLabel": "Defense News, Feb 26, 2026, and Bundeswehr.de official procurement page",
+      "confidence": "high, verified against Defense News reporting and the official Bundeswehr procurement page"
+    },
+    {
+      "id": "sample-01",
+      "name": "Nordwind Systems (sample)",
+      "country": "Sweden",
+      "founded": 2021,
+      "category": "Maritime Autonomy",
+      "stage": "Series A",
+      "lastRoundEUR": 28000000,
+      "lastRoundDate": "2026-05-10",
+      "leadInvestor": "Sample Capital Partners",
+      "real": false,
+      "sourceUrl": null,
+      "sourceLabel": "PLACEHOLDER — replace via ingestion pipeline",
+      "confidence": "none — sample row"
+    },
+    {
+      "id": "sample-02",
+      "name": "Helion Dynamics (sample)",
+      "country": "Poland",
+      "founded": 2022,
+      "category": "Cyber & Electronic Warfare",
+      "stage": "Seed",
+      "lastRoundEUR": 6500000,
+      "lastRoundDate": "2026-03-02",
+      "leadInvestor": "Sample Ventures",
+      "real": false,
+      "sourceUrl": null,
+      "sourceLabel": "PLACEHOLDER — replace via ingestion pipeline",
+      "confidence": "none — sample row"
+    },
+    {
+      "id": "sample-03",
+      "name": "Aegis Sensing (sample)",
+      "country": "Estonia",
+      "founded": 2023,
+      "category": "Space & ISR",
+      "stage": "Seed",
+      "lastRoundEUR": 4200000,
+      "lastRoundDate": "2026-06-21",
+      "leadInvestor": "Sample Angels Syndicate",
+      "real": false,
+      "sourceUrl": null,
+      "sourceLabel": "PLACEHOLDER — replace via ingestion pipeline",
+      "confidence": "none — sample row"
+    },
+    {
+      "id": "sample-04",
+      "name": "Ferrum Robotics (sample)",
+      "country": "Germany",
+      "founded": 2020,
+      "category": "Ground Robotics",
+      "stage": "Series B",
+      "lastRoundEUR": 62000000,
+      "lastRoundDate": "2026-04-18",
+      "leadInvestor": "Sample Growth Fund",
+      "real": false,
+      "sourceUrl": null,
+      "sourceLabel": "PLACEHOLDER — replace via ingestion pipeline",
+      "confidence": "none — sample row"
+    },
+    {
+      "id": "sample-05",
+      "name": "Halcyon Comms (sample)",
+      "country": "United Kingdom",
+      "founded": 2019,
+      "category": "Communications",
+      "stage": "Series C",
+      "lastRoundEUR": 95000000,
+      "lastRoundDate": "2026-02-27",
+      "leadInvestor": "Sample Strategic Holdings",
+      "real": false,
+      "sourceUrl": null,
+      "sourceLabel": "PLACEHOLDER — replace via ingestion pipeline",
+      "confidence": "none — sample row"
+    },
+    {
+      "id": "sample-06",
+      "name": "Vireo Munitions (sample)",
+      "country": "Netherlands",
+      "founded": 2022,
+      "category": "Munitions & Loitering",
+      "stage": "Series A",
+      "lastRoundEUR": 33000000,
+      "lastRoundDate": "2026-07-03",
+      "leadInvestor": "Sample Defense Capital",
+      "real": false,
+      "sourceUrl": null,
+      "sourceLabel": "PLACEHOLDER — replace via ingestion pipeline",
+      "confidence": "none — sample row"
+    }
+  ],
+  "countrySpendTrendEUR_bn": {
+    "note": "Illustrative shape only. Replace with real SIPRI / EDA / World Bank series before use — see METHODOLOGY.md for exact download and API endpoints.",
+    "years": [2021, 2022, 2023, 2024, 2025],
+    "series": {
+      "Germany": [50.3, 55.8, 66.8, 71.5, 82.4],
+      "France": [55.0, 56.6, 61.3, 64.0, 67.0],
+      "United Kingdom": [58.6, 63.0, 66.0, 70.0, 76.6],
+      "Poland": [13.4, 16.6, 27.0, 34.7, 38.2]
+    }
+  },
+  "signals": [
+    {
+      "title": "Приклад сигналу: сплеск фінансування ground-robotics у Німеччині",
+      "whatChanged": "Це приклад формату сигналу — замінити на реальний, отриманий з pipeline.",
+      "evidence": "PLACEHOLDER",
+      "affected": ["Germany", "Ground Robotics"],
+      "date": "2026-08-01",
+      "confidence": "sample",
+      "sources": []
+    }
+  ]
+}
