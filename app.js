@@ -228,14 +228,17 @@ function renderCountries(data) {
 
 function renderSignals(data) {
   document.getElementById("signalsFeed").innerHTML = data.signals
-    .map(
-      (s) => `
+    .map((s) => {
+      const isVerified = s.confidence === "verified";
+      const stampClass = isVerified ? "verified" : "sample";
+      const stampText = isVerified ? "verified signal, sourced event" : "sample signal, not a verified event";
+      return `
     <div class="signal">
       <h3>${s.title}</h3>
       <p>${s.whatChanged}</p>
-      <span class="stamp sample">sample signal · not a verified event</span>
-    </div>`
-    )
+      <span class="stamp ${stampClass}">${stampText}</span>
+    </div>`;
+    })
     .join("");
 }
 
