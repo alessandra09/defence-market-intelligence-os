@@ -282,7 +282,9 @@ section { padding-top: 64px; scroll-margin-top: 24px; }
 }
 
 .grid-2 { display: grid; grid-template-columns: 1.4fr 1fr; gap: 16px; }
+.grid-2-even { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+@media (max-width: 980px) { .grid-2-even { grid-template-columns: 1fr; } }
 
 .chart-title {
   font-size: 12.5px;
@@ -297,6 +299,12 @@ section { padding-top: 64px; scroll-margin-top: 24px; }
 }
 
 canvas { max-width: 100%; }
+
+.map-frame {
+  max-width: 640px;
+  margin: 0 auto;
+}
+.map-frame svg { max-height: 380px; width: 100%; height: auto; }
 
 /* ---------- filters ---------- */
 

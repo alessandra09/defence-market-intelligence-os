@@ -4,8 +4,13 @@
 // pipeline described in METHODOLOGY.md is live - the rendering
 // functions below don't need to change.
 
-const EUR = (n) =>
-  new Intl.NumberFormat("en-GB", { maximumFractionDigits: 1 }).format(n / 1e6) + "M";
+const EUR = (n) => {
+  const millions = n / 1e6;
+  if (millions >= 1000) {
+    return new Intl.NumberFormat("en-GB", { maximumFractionDigits: 2 }).format(millions / 1000) + "bn";
+  }
+  return new Intl.NumberFormat("en-GB", { maximumFractionDigits: 1 }).format(millions) + "M";
+};
 
 const fmtDate = (d) => new Date(d).toISOString().slice(0, 10);
 
@@ -171,13 +176,15 @@ function renderCharts(data) {
 
 function renderCapitalMap(data) {
   const positions = {
-    Portugal: [90, 380],
-    France: [190, 260],
-    Germany: [310, 195],
-    Finland: [430, 55],
-    Ukraine: [500, 250],
+    Portugal: [70, 270],
+    France: [170, 190],
+    Germany: [300, 150],
+    Finland: [420, 45],
+    Ukraine: [480, 175],
   };
-  const W = 600, H = 460;
+  const W = 600, H = 340;
+  const cx0 = 300, cy0 = 155; // schematic "aggregate" hub, roughly central Europe
+
   const byCountry = {};
   data.companies.forEach((c) => {
     if (!positions[c.country]) return;
@@ -187,21 +194,39 @@ function renderCapitalMap(data) {
   const maxFunding = Math.max(...totals, 1);
 
   let svg = "";
-  for (let gx = 20; gx < W; gx += 32) {
-    for (let gy = 20; gy < H; gy += 32) {
-      svg += `<circle cx="${gx}" cy="${gy}" r="0.6" fill="rgba(231,229,222,0.07)"/>`;
+
+  // frame + corner ticks, matching the blueprint plate style used elsewhere
+  svg += `<rect x="1" y="1" width="${W - 2}" height="${H - 2}" fill="none" stroke="rgba(231,229,222,0.14)" stroke-width="1"/>`;
+  [[6, 6, 1, 1], [W - 6, 6, -1, 1], [6, H - 6, 1, -1], [W - 6, H - 6, -1, -1]].forEach(([tx, ty, dx, dy]) => {
+    svg += `<path d="M${tx} ${ty + dy * 12} L${tx} ${ty} L${tx + dx * 12} ${ty}" stroke="#C98A3B" stroke-width="1.3" fill="none"/>`;
+  });
+  svg += `<text x="16" y="20" font-family="IBM Plex Mono, monospace" font-size="9.5" letter-spacing="0.08em" fill="#93999F">EUROPE, TRACKED MARKETS ONLY</text>`;
+
+  // faint dot grid
+  for (let gx = 24; gx < W - 20; gx += 30) {
+    for (let gy = 30; gy < H - 16; gy += 30) {
+      svg += `<circle cx="${gx}" cy="${gy}" r="0.5" fill="rgba(231,229,222,0.05)"/>`;
     }
   }
+
+  // spokes from a schematic aggregate hub to each market, so this reads as
+  // a deliberate diagram rather than floating unconnected dots
+  Object.keys(byCountry).forEach((country) => {
+    const [cx, cy] = positions[country];
+    svg += `<line x1="${cx0}" y1="${cy0}" x2="${cx}" y2="${cy}" stroke="rgba(201,138,59,0.18)" stroke-width="1"/>`;
+  });
+  svg += `<circle cx="${cx0}" cy="${cy0}" r="2.5" fill="#6C8CAE"/>`;
 
   Object.entries(byCountry).forEach(([country, companies]) => {
     const [cx, cy] = positions[country];
     const totalFunding = companies.reduce((s, c) => s + (c.lastRoundEUR || 0), 0);
-    const r = 10 + 26 * Math.sqrt(totalFunding / maxFunding);
+    const r = 8 + 17 * Math.sqrt(totalFunding / maxFunding);
     svg += `<circle class="flow-pulse" cx="${cx}" cy="${cy}" r="${r.toFixed(1)}" fill="none" stroke="#C98A3B" stroke-width="1"/>`;
     svg += `<circle cx="${cx}" cy="${cy}" r="${r.toFixed(1)}" fill="#C98A3B" fill-opacity="0.14" stroke="#C98A3B" stroke-width="1.5"/>`;
-    svg += `<circle cx="${cx}" cy="${cy}" r="3" fill="#C98A3B"/>`;
-    svg += `<text x="${cx}" y="${cy - r - 14}" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="12" font-weight="600" fill="#E7E5DE">${country}</text>`;
-    svg += `<text x="${cx}" y="${cy - r - 2}" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9.5" fill="#93999F">€${EUR(totalFunding)} · ${companies.length} ${companies.length === 1 ? "company" : "companies"}</text>`;
+    svg += `<circle cx="${cx}" cy="${cy}" r="2.5" fill="#C98A3B"/>`;
+    const labelY = cy - r - 18 > 14 ? cy - r - 18 : cy + r + 16;
+    svg += `<text x="${cx}" y="${labelY}" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" font-weight="600" fill="#E7E5DE">${country}</text>`;
+    svg += `<text x="${cx}" y="${labelY + 12}" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="8.5" fill="#93999F">€${EUR(totalFunding)} · ${companies.length} ${companies.length === 1 ? "co." : "cos."}</text>`;
   });
 
   document.getElementById("capitalMap").innerHTML = svg;
