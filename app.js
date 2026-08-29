@@ -22,28 +22,71 @@ async function loadData() {
   return res.json();
 }
 
+const REDUCE_MOTION = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+function animateValue(el, endText) {
+  if (REDUCE_MOTION) { el.textContent = endText; return; }
+  const match = endText.match(/-?[\d,.]+/);
+  if (!match) { el.textContent = endText; return; }
+  const prefix = endText.slice(0, match.index);
+  const suffix = endText.slice(match.index + match[0].length);
+  const end = parseFloat(match[0].replace(/,/g, ""));
+  if (isNaN(end)) { el.textContent = endText; return; }
+  const isInt = Number.isInteger(end);
+  const duration = 900;
+  const start = performance.now();
+  function frame(now) {
+    const t = Math.min(1, (now - start) / duration);
+    const eased = 1 - Math.pow(1 - t, 3);
+    const current = end * eased;
+    const formatted = isInt
+      ? Math.round(current).toLocaleString("en-US")
+      : current.toFixed(1);
+    el.textContent = prefix + formatted + suffix;
+    if (t < 1) requestAnimationFrame(frame);
+    else el.textContent = endText;
+  }
+  requestAnimationFrame(frame);
+}
+
 function renderKPIs(data) {
   const total = data.companies.reduce((s, c) => s + (c.lastRoundEUR || 0), 0);
   const verified = data.companies.filter((c) => c.real).length;
   const kpis = [
     { label: "Tracked funding (dataset)", value: "€" + EUR(total) },
-    { label: "Funding events tracked", value: data.companies.length },
-    { label: "Companies tracked", value: data.companies.length },
+    { label: "Funding events tracked", value: String(data.companies.length) },
+    { label: "Companies tracked", value: String(data.companies.length) },
     { label: "Verified rows", value: verified + " / " + data.companies.length },
-    { label: "Countries covered", value: new Set(data.companies.map((c) => c.country)).size },
-    { label: "Active signals", value: data.signals.length },
+    { label: "Countries covered", value: String(new Set(data.companies.map((c) => c.country)).size) },
+    { label: "Active signals", value: String(data.signals.length) },
   ];
   const grid = document.getElementById("kpiGrid");
   grid.innerHTML = kpis
     .map(
-      (k) => `
+      (k, i) => `
     <div class="kpi">
       <div class="label">${k.label}</div>
-      <div class="value">${k.value}</div>
-      <span class="stamp sample">sample · demo dataset</span>
+      <div class="value" data-target="${k.value}" id="kpi-val-${i}">${k.value}</div>
+      <span class="stamp verified">verified dataset</span>
     </div>`
     )
     .join("");
+
+  const io = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          kpis.forEach((k, i) => {
+            const el = document.getElementById("kpi-val-" + i);
+            if (el) animateValue(el, k.value);
+          });
+          io.disconnect();
+        }
+      });
+    },
+    { threshold: 0.3 }
+  );
+  io.observe(grid);
 }
 
 function svgLineChart(el, years, series) {
@@ -126,7 +169,76 @@ function renderCharts(data) {
   svgBarChart(document.getElementById("categoryChart"), Object.keys(byCategory), Object.values(byCategory));
 }
 
-let ALL_COMPANIES = [];
+function renderCapitalMap(data) {
+  const positions = {
+    Portugal: [90, 380],
+    France: [190, 260],
+    Germany: [310, 195],
+    Finland: [430, 55],
+    Ukraine: [500, 250],
+  };
+  const W = 600, H = 460;
+  const byCountry = {};
+  data.companies.forEach((c) => {
+    if (!positions[c.country]) return;
+    (byCountry[c.country] = byCountry[c.country] || []).push(c);
+  });
+  const totals = Object.values(byCountry).map((list) => list.reduce((s, c) => s + (c.lastRoundEUR || 0), 0));
+  const maxFunding = Math.max(...totals, 1);
+
+  let svg = "";
+  for (let gx = 20; gx < W; gx += 32) {
+    for (let gy = 20; gy < H; gy += 32) {
+      svg += `<circle cx="${gx}" cy="${gy}" r="0.6" fill="rgba(231,229,222,0.07)"/>`;
+    }
+  }
+
+  Object.entries(byCountry).forEach(([country, companies]) => {
+    const [cx, cy] = positions[country];
+    const totalFunding = companies.reduce((s, c) => s + (c.lastRoundEUR || 0), 0);
+    const r = 10 + 26 * Math.sqrt(totalFunding / maxFunding);
+    svg += `<circle class="flow-pulse" cx="${cx}" cy="${cy}" r="${r.toFixed(1)}" fill="none" stroke="#C98A3B" stroke-width="1"/>`;
+    svg += `<circle cx="${cx}" cy="${cy}" r="${r.toFixed(1)}" fill="#C98A3B" fill-opacity="0.14" stroke="#C98A3B" stroke-width="1.5"/>`;
+    svg += `<circle cx="${cx}" cy="${cy}" r="3" fill="#C98A3B"/>`;
+    svg += `<text x="${cx}" y="${cy - r - 14}" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="12" font-weight="600" fill="#E7E5DE">${country}</text>`;
+    svg += `<text x="${cx}" y="${cy - r - 2}" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9.5" fill="#93999F">€${EUR(totalFunding)} · ${companies.length} ${companies.length === 1 ? "company" : "companies"}</text>`;
+  });
+
+  document.getElementById("capitalMap").innerHTML = svg;
+}
+
+function renderMomentum(data) {
+  const movers = data.companies.filter((c) => c.fundingHistory && c.fundingHistory.length >= 2);
+  document.getElementById("momentumGrid").innerHTML = movers
+    .map((c) => {
+      const hist = c.fundingHistory;
+      const first = hist[0].valuationEUR;
+      const last = hist[hist.length - 1].valuationEUR;
+      const multiple = (last / first).toFixed(1);
+      const W = 460, H = 120, padL = 10, padR = 10, padT = 16, padB = 20;
+      const innerW = W - padL - padR, innerH = H - padT - padB;
+      const x = (i) => padL + (innerW * i) / (hist.length - 1);
+      const y = (v) => padT + innerH - ((v - 0) / last) * innerH;
+      let d = "";
+      hist.forEach((pt, i) => { d += (i === 0 ? "M" : "L") + x(i).toFixed(1) + " " + y(pt.valuationEUR).toFixed(1) + " "; });
+      let dots = hist
+        .map((pt, i) => `<circle cx="${x(i).toFixed(1)}" cy="${y(pt.valuationEUR).toFixed(1)}" r="3" fill="#C98A3B"/>`)
+        .join("");
+      let labels = hist
+        .map((pt, i) => `<text x="${x(i).toFixed(1)}" y="${H - 4}" text-anchor="middle" font-size="8.5" fill="#93999F" font-family="IBM Plex Mono, monospace">${fmtDate(pt.date).slice(0, 7)}</text>`)
+        .join("");
+      return `
+      <div class="panel">
+        <div class="chart-title">${c.name} <span style="color:#5CA37B;font-weight:600">+${multiple}x</span></div>
+        <div class="chart-sub">${c.country} · valuation, ${hist[0].label} to ${hist[hist.length - 1].label}</div>
+        <svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;display:block">
+          <path d="${d}" fill="none" stroke="#C98A3B" stroke-width="2"/>
+          ${dots}${labels}
+        </svg>
+      </div>`;
+    })
+    .join("");
+}
 let SORT_KEY = null;
 let SORT_DIR = 1;
 
@@ -265,6 +377,8 @@ function renderSources() {
     renderTable();
   } catch (e) { console.error("Company table failed:", e); }
   try { renderCountries(data); } catch (e) { console.error("renderCountries failed:", e); }
+  try { renderCapitalMap(data); } catch (e) { console.error("renderCapitalMap failed:", e); }
+  try { renderMomentum(data); } catch (e) { console.error("renderMomentum failed:", e); }
   try { renderSignals(data); } catch (e) { console.error("renderSignals failed:", e); }
   try { renderSources(); } catch (e) { console.error("renderSources failed:", e); }
   try { renderCharts(data); } catch (e) { console.error("renderCharts failed:", e); }

@@ -256,6 +256,21 @@ section { padding-top: 64px; scroll-margin-top: 24px; }
 .stamp.verified { color: var(--good); border-color: rgba(92,163,123,0.35); }
 .stamp.sample { color: var(--warn); border-color: rgba(214,178,76,0.35); }
 .stamp::before { content: "▪"; font-size: 8px; }
+.stamp.verified::before { animation: stampPulse 2.4s ease-in-out infinite; }
+@keyframes stampPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+}
+
+.flow-pulse {
+  animation: flowPulse 2.8s ease-out infinite;
+  transform-origin: center;
+  transform-box: fill-box;
+}
+@keyframes flowPulse {
+  0% { transform: scale(0.85); opacity: 0.9; }
+  100% { transform: scale(1.35); opacity: 0; }
+}
 
 /* ---------- cards / panels ---------- */
 
@@ -314,7 +329,12 @@ canvas { max-width: 100%; }
   border: 1px solid rgba(0,0,0,0.08);
 }
 
-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.table-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+table { width: 100%; min-width: 720px; border-collapse: collapse; font-size: 13px; }
 
 thead th {
   text-align: left;
@@ -408,4 +428,13 @@ footer {
   .kpi-grid { grid-template-columns: repeat(2, 1fr); }
   .grid-2, .grid-3 { grid-template-columns: 1fr; }
   .hero h1 { font-size: 30px; }
+}
+
+@media (max-width: 480px) {
+  .main { padding: 0 14px 48px; }
+  .kpi-grid { grid-template-columns: 1fr; }
+  .hero h1 { font-size: 26px; }
+  .hero p.lede { font-size: 14px; }
+  .filters input { min-width: 0; width: 100%; }
+  .filters select { flex: 1 1 auto; }
 }
