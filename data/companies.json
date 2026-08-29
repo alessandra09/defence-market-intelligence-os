@@ -93,6 +93,36 @@
       "sourceUrl": "https://www.businesswire.com/news/home/20250916602085/en/Swarmer-Ukraines-Leading-Drone-Autonomy-and-Swarming-Company-Announces-%2415m-Series-A-Led-By-US-Investors",
       "sourceLabel": "BusinessWire official announcement, Sep 16, 2025: $15M Series A. Swarmer later listed on Nasdaq (ticker SWMR) in March 2026, the first Ukrainian defense-tech IPO on a US exchange",
       "confidence": "high, verified against the official BusinessWire release and cross-checked with Forbes and AIN.ua"
+    },
+    {
+      "id": "iceye",
+      "name": "ICEYE",
+      "country": "Finland",
+      "founded": 2014,
+      "category": "Space & ISR",
+      "stage": "Series F",
+      "lastRoundEUR": 450000000,
+      "lastRoundDate": "2026-06-09",
+      "leadInvestor": "General Atlantic, with Solidium, Tesi, Nokia, and Qatar Investment Authority",
+      "real": true,
+      "sourceUrl": "https://www.iceye.com/newsroom/press-releases/iceye-leads-a-new-era-of-sovereign-intelligence-from-space-with-1b-funding-round",
+      "sourceLabel": "ICEYE official press release, Jun 9, 2026: EUR 450M primary Series F at a EUR 10B+ valuation, EUR 1B including secondary",
+      "confidence": "high, verified against the official company press release and cross-checked with Bloomberg"
+    },
+    {
+      "id": "tekever",
+      "name": "Tekever",
+      "country": "Portugal",
+      "founded": 2001,
+      "category": "Aerial ISR & Surveillance",
+      "stage": "Growth round, unicorn",
+      "lastRoundEUR": 460000000,
+      "lastRoundDate": "2025-05-06",
+      "leadInvestor": "Ventura Capital, with Baillie Gifford, NATO Innovation Fund, Iberis Capital, and Crescent Cove",
+      "real": true,
+      "sourceUrl": "https://www.portugalresident.com/drone-manufacturer-tekever-becomes-portugals-latest-unicorn/",
+      "sourceLabel": "Reported at approximately $500M, valuing Tekever above $1.25B, May 2025",
+      "confidence": "high, verified against multiple independent outlets, Portugal Resident and Odessa Journal"
     }
   ],
   "countrySpendTrendEUR_bn": {
