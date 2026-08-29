@@ -47,7 +47,12 @@
       "real": true,
       "sourceUrl": "https://quantum-systems.com/news/quantum-systems-raises-1-2bn-series-d-to-accelerate-growth-and-scale-software-defined-autonomous-systems-across-air-land-and-sea/",
       "sourceLabel": "Quantum Systems official press release, Jul 2, 2026: $1.2B Series D at an $8B post-money valuation",
-      "confidence": "high, verified against the official company press release and cross-checked with CNBC and Bloomberg"
+      "confidence": "high, verified against the official company press release and cross-checked with CNBC and Bloomberg",
+      "fundingHistory": [
+        { "date": "2025-05-01", "valuationEUR": 1000000000, "label": "Series C, EUR 160M, unicorn valuation" },
+        { "date": "2025-11-01", "valuationEUR": 3000000000, "label": "Series C extension, EUR 180M" },
+        { "date": "2026-07-02", "valuationEUR": 7360000000, "label": "Series D, $1.2B at ~$8B valuation" }
+      ]
     },
     {
       "id": "arx-robotics",
@@ -107,7 +112,11 @@
       "real": true,
       "sourceUrl": "https://www.iceye.com/newsroom/press-releases/iceye-leads-a-new-era-of-sovereign-intelligence-from-space-with-1b-funding-round",
       "sourceLabel": "ICEYE official press release, Jun 9, 2026: EUR 450M primary Series F at a EUR 10B+ valuation, EUR 1B including secondary",
-      "confidence": "high, verified against the official company press release and cross-checked with Bloomberg"
+      "confidence": "high, verified against the official company press release and cross-checked with Bloomberg",
+      "fundingHistory": [
+        { "date": "2025-12-01", "valuationEUR": 2400000000, "label": "EUR 150M round, EUR 2.4B valuation" },
+        { "date": "2026-06-09", "valuationEUR": 10000000000, "label": "Series F, EUR 450M primary, EUR 10B+ valuation" }
+      ]
     },
     {
       "id": "tekever",
@@ -137,13 +146,16 @@
   },
   "signals": [
     {
-      "title": "Quantum Systems more than doubles valuation in five months",
-      "whatChanged": "Quantum Systems raised a EUR 600M round in May 2026 at roughly a EUR 7B valuation, then closed a $1.2B Series D in July 2026 at an $8B post-money valuation, more than doubling in under five months. This is a real, sourced pattern, not a placeholder.",
-      "evidence": "Two independent official rounds, three months apart, both publicly reported",
+      "title": "Quantum Systems more than doubles valuation in eight months",
+      "whatChanged": "Quantum Systems raised a EUR 180M Series C extension in November 2025 at a valuation above EUR 3B, then closed a $1.2B Series D in July 2026 at an $8B post-money valuation, more than doubling in under eight months. This is a real, sourced progression, not a placeholder.",
+      "evidence": "Two independent official rounds, eight months apart, both publicly reported and cross-checked",
       "affected": ["Germany", "AI & Autonomy"],
       "date": "2026-07-02",
       "confidence": "verified",
-      "sources": ["https://quantum-systems.com/news/quantum-systems-raises-1-2bn-series-d-to-accelerate-growth-and-scale-software-defined-autonomous-systems-across-air-land-and-sea/"]
+      "sources": [
+        "https://sacra.com/c/quantum-systems/",
+        "https://quantum-systems.com/news/quantum-systems-raises-1-2bn-series-d-to-accelerate-growth-and-scale-software-defined-autonomous-systems-across-air-land-and-sea/"
+      ]
     }
   ]
 }
