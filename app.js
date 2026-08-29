@@ -227,12 +227,33 @@ function renderSources() {
 (async function init() {
   const data = await loadData();
   ALL_COMPANIES = data.companies;
-  renderKPIs(data);
-  renderCharts(data);
-  populateFilters(data);
-  wireFilters();
-  renderTable();
-  renderCountries(data);
-  renderSignals(data);
-  renderSources();
+
+  // Critical UI first: these must render even if charts fail below.
+  try { renderKPIs(data); } catch (e) { console.error("renderKPIs failed:", e); }
+  try {
+    populateFilters(data);
+    wireFilters();
+    renderTable();
+  } catch (e) { console.error("Company table failed:", e); }
+  try { renderCountries(data); } catch (e) { console.error("renderCountries failed:", e); }
+  try { renderSignals(data); } catch (e) { console.error("renderSignals failed:", e); }
+  try { renderSources(); } catch (e) { console.error("renderSources failed:", e); }
+
+  // Charts last, and isolated: if Chart.js failed to load from the CDN
+  // (ad blocker, offline, strict privacy settings), the rest of the
+  // page must keep working.
+  try {
+    if (typeof Chart === "undefined") {
+      throw new Error("Chart.js did not load (blocked or offline) - charts skipped, rest of page unaffected.");
+    }
+    renderCharts(data);
+  } catch (e) {
+    console.warn(e.message);
+    ["spendChart", "categoryChart"].forEach((id) => {
+      const el = document.getElementById(id);
+      if (el && el.parentElement) {
+        el.parentElement.innerHTML += '<div style="font-size:12px;color:var(--ink-faint);padding:8px 0">Chart library did not load (likely blocked by an ad blocker or offline mode). The rest of the page is unaffected.</div>';
+      }
+    });
+  }
 })();
