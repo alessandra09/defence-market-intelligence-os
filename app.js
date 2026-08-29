@@ -183,7 +183,7 @@ function renderCapitalMap(data) {
     Ukraine: [480, 175],
   };
   const W = 600, H = 340;
-  const cx0 = 300, cy0 = 155; // schematic "aggregate" hub, roughly central Europe
+  const cx0 = 250, cy0 = 268; // schematic aggregate point, deliberately placed in open space
 
   const byCountry = {};
   data.companies.forEach((c) => {
@@ -216,6 +216,7 @@ function renderCapitalMap(data) {
     svg += `<line x1="${cx0}" y1="${cy0}" x2="${cx}" y2="${cy}" stroke="rgba(201,138,59,0.18)" stroke-width="1"/>`;
   });
   svg += `<circle cx="${cx0}" cy="${cy0}" r="2.5" fill="#6C8CAE"/>`;
+  svg += `<text x="${cx0}" y="${cy0 + 16}" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="8" fill="#6C8CAE">tracked total</text>`;
 
   Object.entries(byCountry).forEach(([country, companies]) => {
     const [cx, cy] = positions[country];
