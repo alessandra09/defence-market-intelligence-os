@@ -58,12 +58,12 @@
         <div class="panel">
           <div class="chart-title">Government defence spending trend, by country</div>
           <div class="chart-sub">€bn · 2021–2025 · SAMPLE SHAPE, replace with SIPRI/EDA/World Bank series</div>
-          <canvas id="spendChart" height="130"></canvas>
+          <svg id="spendChart" viewBox="0 0 500 200" preserveAspectRatio="xMidYMid meet" style="width:100%;height:auto;display:block"></svg>
         </div>
         <div class="panel">
           <div class="chart-title">Tracked funding by category</div>
           <div class="chart-sub">€m, last-round amounts in current dataset</div>
-          <canvas id="categoryChart" height="130"></canvas>
+          <svg id="categoryChart" viewBox="0 0 500 200" preserveAspectRatio="xMidYMid meet" style="width:100%;height:auto;display:block"></svg>
         </div>
       </div>
     </section>
@@ -146,7 +146,6 @@
   </main>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js"></script>
 <script src="app.js"></script>
 </body>
 </html>

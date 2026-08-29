@@ -46,57 +46,84 @@ function renderKPIs(data) {
     .join("");
 }
 
+function svgLineChart(el, years, series) {
+  const W = 500, H = 200, padL = 40, padR = 12, padT = 14, padB = 24;
+  const innerW = W - padL - padR, innerH = H - padT - padB;
+  const colors = ["#C98A3B", "#6C8CAE", "#5CA37B", "#D6B24C"];
+  const allVals = Object.values(series).flat();
+  const maxV = Math.max(...allVals) * 1.08;
+  const minV = 0;
+  const x = (i) => padL + (innerW * i) / (years.length - 1);
+  const y = (v) => padT + innerH - ((v - minV) / (maxV - minV || 1)) * innerH;
+
+  let svg = "";
+  const gridN = 4;
+  for (let g = 0; g <= gridN; g++) {
+    const gy = padT + (innerH * g) / gridN;
+    const val = maxV - (maxV * g) / gridN;
+    svg += `<line x1="${padL}" y1="${gy}" x2="${W - padR}" y2="${gy}" stroke="rgba(231,229,222,0.07)" stroke-width="1"/>`;
+    svg += `<text x="${padL - 6}" y="${gy + 3}" font-size="9" text-anchor="end" fill="#5C6268" font-family="IBM Plex Mono, monospace">${val.toFixed(0)}</text>`;
+  }
+  years.forEach((yr, i) => {
+    svg += `<text x="${x(i)}" y="${H - 6}" font-size="9" text-anchor="middle" fill="#5C6268" font-family="IBM Plex Mono, monospace">${yr}</text>`;
+  });
+
+  const legendItems = [];
+  Object.entries(series).forEach(([country, values], i) => {
+    const color = colors[i % colors.length];
+    let d = "";
+    values.forEach((v, idx) => { d += (idx === 0 ? "M" : "L") + x(idx).toFixed(1) + " " + y(v).toFixed(1) + " "; });
+    svg += `<path d="${d}" fill="none" stroke="${color}" stroke-width="2"/>`;
+    values.forEach((v, idx) => { svg += `<circle cx="${x(idx).toFixed(1)}" cy="${y(v).toFixed(1)}" r="2" fill="${color}"/>`; });
+    legendItems.push({ country, color });
+  });
+
+  legendItems.forEach((item, i) => {
+    const lx = padL + i * 95;
+    svg += `<rect x="${lx}" y="2" width="8" height="8" fill="${item.color}"/>`;
+    svg += `<text x="${lx + 12}" y="10" font-size="9" fill="#93999F" font-family="IBM Plex Mono, monospace">${item.country}</text>`;
+  });
+
+  el.innerHTML = svg;
+}
+
+function svgBarChart(el, labels, values) {
+  const W = 500, H = 200, padL = 34, padR = 12, padT = 10, padB = 42;
+  const innerW = W - padL - padR, innerH = H - padT - padB;
+  const maxV = Math.max(...values) * 1.1 || 1;
+  const barW = innerW / values.length;
+  const y = (v) => padT + innerH - (v / maxV) * innerH;
+
+  let svg = "";
+  const gridN = 4;
+  for (let g = 0; g <= gridN; g++) {
+    const gy = padT + (innerH * g) / gridN;
+    const val = maxV - (maxV * g) / gridN;
+    svg += `<line x1="${padL}" y1="${gy}" x2="${W - padR}" y2="${gy}" stroke="rgba(231,229,222,0.07)" stroke-width="1"/>`;
+    svg += `<text x="${padL - 6}" y="${gy + 3}" font-size="9" text-anchor="end" fill="#5C6268" font-family="IBM Plex Mono, monospace">${val.toFixed(0)}</text>`;
+  }
+  values.forEach((v, i) => {
+    const bx = padL + i * barW + barW * 0.15;
+    const bw = barW * 0.7;
+    const by = y(v);
+    svg += `<rect x="${bx.toFixed(1)}" y="${by.toFixed(1)}" width="${bw.toFixed(1)}" height="${(padT + innerH - by).toFixed(1)}" fill="#C98A3B" rx="2"/>`;
+    const label = labels[i].length > 12 ? labels[i].slice(0, 11) + "…" : labels[i];
+    svg += `<text x="${(bx + bw / 2).toFixed(1)}" y="${H - 26}" font-size="8" text-anchor="middle" fill="#5C6268" font-family="IBM Plex Mono, monospace" transform="rotate(20 ${(bx + bw / 2).toFixed(1)} ${H - 26})">${label}</text>`;
+  });
+
+  el.innerHTML = svg;
+}
+
 function renderCharts(data) {
-  const spendCtx = document.getElementById("spendChart");
   const years = data.countrySpendTrendEUR_bn.years;
   const series = data.countrySpendTrendEUR_bn.series;
-  new Chart(spendCtx, {
-    type: "line",
-    data: {
-      labels: years,
-      datasets: Object.entries(series).map(([country, values], i) => ({
-        label: country,
-        data: values,
-        borderColor: ["#C98A3B", "#6C8CAE", "#5CA37B", "#D6B24C"][i % 4],
-        backgroundColor: "transparent",
-        tension: 0.25,
-        pointRadius: 2,
-      })),
-    },
-    options: {
-      plugins: { legend: { labels: { color: "#93999F", font: { family: "IBM Plex Mono", size: 10 } } } },
-      scales: {
-        x: { ticks: { color: "#5C6268" }, grid: { color: "rgba(255,255,255,0.05)" } },
-        y: { ticks: { color: "#5C6268" }, grid: { color: "rgba(255,255,255,0.05)" } },
-      },
-    },
-  });
+  svgLineChart(document.getElementById("spendChart"), years, series);
 
   const byCategory = {};
   data.companies.forEach((c) => {
     byCategory[c.category] = (byCategory[c.category] || 0) + (c.lastRoundEUR || 0) / 1e6;
   });
-  new Chart(document.getElementById("categoryChart"), {
-    type: "bar",
-    data: {
-      labels: Object.keys(byCategory),
-      datasets: [
-        {
-          label: "€m",
-          data: Object.values(byCategory),
-          backgroundColor: "#C98A3B",
-          borderRadius: 2,
-        },
-      ],
-    },
-    options: {
-      plugins: { legend: { display: false } },
-      scales: {
-        x: { ticks: { color: "#5C6268", font: { size: 10 } }, grid: { display: false } },
-        y: { ticks: { color: "#5C6268" }, grid: { color: "rgba(255,255,255,0.05)" } },
-      },
-    },
-  });
+  svgBarChart(document.getElementById("categoryChart"), Object.keys(byCategory), Object.values(byCategory));
 }
 
 let ALL_COMPANIES = [];
@@ -228,7 +255,6 @@ function renderSources() {
   const data = await loadData();
   ALL_COMPANIES = data.companies;
 
-  // Critical UI first: these must render even if charts fail below.
   try { renderKPIs(data); } catch (e) { console.error("renderKPIs failed:", e); }
   try {
     populateFilters(data);
@@ -238,22 +264,5 @@ function renderSources() {
   try { renderCountries(data); } catch (e) { console.error("renderCountries failed:", e); }
   try { renderSignals(data); } catch (e) { console.error("renderSignals failed:", e); }
   try { renderSources(); } catch (e) { console.error("renderSources failed:", e); }
-
-  // Charts last, and isolated: if Chart.js failed to load from the CDN
-  // (ad blocker, offline, strict privacy settings), the rest of the
-  // page must keep working.
-  try {
-    if (typeof Chart === "undefined") {
-      throw new Error("Chart.js did not load (blocked or offline) - charts skipped, rest of page unaffected.");
-    }
-    renderCharts(data);
-  } catch (e) {
-    console.warn(e.message);
-    ["spendChart", "categoryChart"].forEach((id) => {
-      const el = document.getElementById(id);
-      if (el && el.parentElement) {
-        el.parentElement.innerHTML += '<div style="font-size:12px;color:var(--ink-faint);padding:8px 0">Chart library did not load (likely blocked by an ad blocker or offline mode). The rest of the page is unaffected.</div>';
-      }
-    });
-  }
+  try { renderCharts(data); } catch (e) { console.error("renderCharts failed:", e); }
 })();
