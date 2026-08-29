@@ -1,15 +1,20 @@
 # Defence Market Intelligence OS - MVP
 
-Investor-facing market-intelligence dashboard for the European defence
-ecosystem: funding, companies, government spending, market signals.
-Non-operational - no weapons, targeting, or tactical data.
+A portfolio case study: a market-intelligence dashboard concept for the
+European defence ecosystem, covering funding, companies, government
+spending, and market signals. Built to demonstrate product thinking,
+competitive analysis, and a provenance-first approach to data (every
+number traces to a source and a timestamp). Non-operational by design:
+no weapons, targeting, or tactical data of any kind.
 
-**This is Phase 1 of a 5-phase build** (see `ARCHITECTURE_NOTES.md` for the
-full plan). It is a static site with sample data, built to prove the
-design system and product shape and to be demo-ready today. Phase 2+
-(real database, live ingestion, AI assistant) is specified separately
-in `DEFENSE_MARKET_INTEL_OS_SPEC.md` - hand that file to Claude Code as
-a starting brief when you're ready to build the real backend.
+Built by Oleksandra Hordieieva - Financial and Revenue Operations Analyst.
+
+**This is Phase 1 of a 5-phase build** (see `DEFENSE_MARKET_INTEL_OS_SPEC.md`
+in this repo for the full plan and phase breakdown). It is a static site
+with sample data, built to prove the design system and product shape.
+Phase 2 onward (real database, live ingestion, a database-scoped AI
+assistant) is specified in that same file, written as a brief a
+developer or an AI coding agent could pick up directly.
 
 ## What's real and what's a placeholder right now
 

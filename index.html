@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="uk">
+<html lang="en">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -42,7 +42,7 @@
         <h1>Fragmented defence-market data, turned into an auditable decision system.</h1>
         <p class="lede">Capital, companies, public spending and market momentum across the European defence ecosystem - every number traceable to a source, a timestamp, and a confidence level.</p>
         <div class="disclaimer">
-          <strong>Це демонстраційна MVP-збірка з прикладовими даними.</strong> Реальні дані підключаються через ingestion pipeline, описаний у METHODOLOGY.md і DATA_SOURCES.md. Жодне число на цій сторінці не слід використовувати для інвестиційного рішення, поки воно не позначено як <span class="stamp verified" style="display:inline-flex;vertical-align:middle">verified</span>.
+          <strong>This is a demonstration MVP build with sample data.</strong> Real data connects through the ingestion pipeline described in METHODOLOGY.md. No number on this page should be used for a financial decision unless it is tagged as <span class="stamp verified" style="display:inline-flex;vertical-align:middle">verified</span>.
         </div>
       </div>
 
@@ -74,23 +74,23 @@
         <span class="hint"><span id="companyCount"></span> tracked</span>
       </div>
       <div class="filters">
-        <input type="text" id="searchInput" placeholder="Пошук за назвою..." />
-        <select id="countryFilter"><option value="">Усі країни</option></select>
-        <select id="categoryFilter"><option value="">Усі категорії</option></select>
-        <select id="stageFilter"><option value="">Усі стадії</option></select>
+        <input type="text" id="searchInput" placeholder="Search by name..." />
+        <select id="countryFilter"><option value="">All countries</option></select>
+        <select id="categoryFilter"><option value="">All categories</option></select>
+        <select id="stageFilter"><option value="">All stages</option></select>
       </div>
       <div class="table-panel">
         <table id="companyTable">
           <thead>
             <tr>
-              <th data-key="name">Компанія</th>
-              <th data-key="country">Країна</th>
-              <th data-key="category">Категорія</th>
-              <th data-key="stage">Стадія</th>
-              <th data-key="lastRoundEUR">Останній раунд</th>
-              <th data-key="lastRoundDate">Дата</th>
-              <th data-key="leadInvestor">Лід-інвестор</th>
-              <th>Провенанс</th>
+              <th data-key="name">Company</th>
+              <th data-key="country">Country</th>
+              <th data-key="category">Category</th>
+              <th data-key="stage">Stage</th>
+              <th data-key="lastRoundEUR">Last round</th>
+              <th data-key="lastRoundDate">Date</th>
+              <th data-key="leadInvestor">Lead investor</th>
+              <th>Provenance</th>
             </tr>
           </thead>
           <tbody id="companyBody"></tbody>
@@ -101,7 +101,7 @@
     <section id="countries">
       <div class="section-head">
         <h2>Country intelligence</h2>
-        <span class="hint">приклад для 4 країн</span>
+        <span class="hint">example for 4 countries</span>
       </div>
       <div class="grid-3" id="countryGrid" style="grid-template-columns:repeat(4,1fr)"></div>
     </section>
@@ -117,12 +117,12 @@
     <section id="methodology" class="methodology">
       <div class="section-head">
         <h2>Methodology</h2>
-        <span class="hint">чому це не "оновлення щосекунди" - і чому це краще</span>
+        <span class="hint">why it is not "real-time updates", and why that is stronger</span>
       </div>
       <div class="panel" style="margin-bottom:24px">
         <dl>
           <dt>Update cadence</dt>
-          <dd>Не існує оборонно-ринкового джерела, яке реально змінюється щосекунди - так само як і в Dealroom, Sixth Domain чи Janes. Державні бюджети (SIPRI, EDA) оновлюються 1×/рік, EU CORDIS - щомісяця, новинні та прес-релізні джерела - у міру появи. Продукт має «слухати» джерела настільки часто, наскільки вони реально змінюються, і чесно показувати <em>last verified</em> для кожного числа.</dd>
+          <dd>No source in the defence-market category genuinely updates every second, and neither Dealroom, Sixth Domain, nor Janes claim otherwise. Government budgets (SIPRI, EDA) update once a year, EU CORDIS updates monthly, and news or press sources update as events happen. The product should listen to each source exactly as often as it genuinely changes, and honestly show <em>last verified</em> for every number.</dd>
           <dt>Primary sources</dt>
           <dd>SIPRI Military Expenditure Database, European Defence Agency Defence Data, World Bank military-expenditure indicators (REST API), EU CORDIS open dataset / API (Horizon Europe, EDF-adjacent research).</dd>
           <dt>Secondary sources</dt>

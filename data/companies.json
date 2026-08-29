@@ -1,6 +1,6 @@
 {
   "meta": {
-    "note": "SAMPLE DATASET — most rows are placeholder/illustrative structure for the ingestion pipeline. Rows flagged \"real\": true carry a verified public source and were checked at generation time. Everything else must be replaced by the real ingestion pipeline described in METHODOLOGY.md before this is shown to an investor.",
+    "note": "SAMPLE DATASET - most rows are placeholder/illustrative structure for the ingestion pipeline. Rows flagged \"real\": true carry a verified public source and were checked at generation time. Everything else must be replaced by the real ingestion pipeline described in METHODOLOGY.md before this is shown to an investor.",
     "generated": "2026-08-29"
   },
   "companies": [
@@ -46,8 +46,8 @@
       "leadInvestor": "Sample Capital Partners",
       "real": false,
       "sourceUrl": null,
-      "sourceLabel": "PLACEHOLDER — replace via ingestion pipeline",
-      "confidence": "none — sample row"
+      "sourceLabel": "PLACEHOLDER - replace via ingestion pipeline",
+      "confidence": "none - sample row"
     },
     {
       "id": "sample-02",
@@ -61,8 +61,8 @@
       "leadInvestor": "Sample Ventures",
       "real": false,
       "sourceUrl": null,
-      "sourceLabel": "PLACEHOLDER — replace via ingestion pipeline",
-      "confidence": "none — sample row"
+      "sourceLabel": "PLACEHOLDER - replace via ingestion pipeline",
+      "confidence": "none - sample row"
     },
     {
       "id": "sample-03",
@@ -76,8 +76,8 @@
       "leadInvestor": "Sample Angels Syndicate",
       "real": false,
       "sourceUrl": null,
-      "sourceLabel": "PLACEHOLDER — replace via ingestion pipeline",
-      "confidence": "none — sample row"
+      "sourceLabel": "PLACEHOLDER - replace via ingestion pipeline",
+      "confidence": "none - sample row"
     },
     {
       "id": "sample-04",
@@ -91,8 +91,8 @@
       "leadInvestor": "Sample Growth Fund",
       "real": false,
       "sourceUrl": null,
-      "sourceLabel": "PLACEHOLDER — replace via ingestion pipeline",
-      "confidence": "none — sample row"
+      "sourceLabel": "PLACEHOLDER - replace via ingestion pipeline",
+      "confidence": "none - sample row"
     },
     {
       "id": "sample-05",
@@ -106,8 +106,8 @@
       "leadInvestor": "Sample Strategic Holdings",
       "real": false,
       "sourceUrl": null,
-      "sourceLabel": "PLACEHOLDER — replace via ingestion pipeline",
-      "confidence": "none — sample row"
+      "sourceLabel": "PLACEHOLDER - replace via ingestion pipeline",
+      "confidence": "none - sample row"
     },
     {
       "id": "sample-06",
@@ -121,12 +121,12 @@
       "leadInvestor": "Sample Defense Capital",
       "real": false,
       "sourceUrl": null,
-      "sourceLabel": "PLACEHOLDER — replace via ingestion pipeline",
-      "confidence": "none — sample row"
+      "sourceLabel": "PLACEHOLDER - replace via ingestion pipeline",
+      "confidence": "none - sample row"
     }
   ],
   "countrySpendTrendEUR_bn": {
-    "note": "Illustrative shape only. Replace with real SIPRI / EDA / World Bank series before use — see METHODOLOGY.md for exact download and API endpoints.",
+    "note": "Illustrative shape only. Replace with real SIPRI / EDA / World Bank series before use - see METHODOLOGY.md for exact download and API endpoints.",
     "years": [2021, 2022, 2023, 2024, 2025],
     "series": {
       "Germany": [50.3, 55.8, 66.8, 71.5, 82.4],
@@ -137,8 +137,8 @@
   },
   "signals": [
     {
-      "title": "Приклад сигналу: сплеск фінансування ground-robotics у Німеччині",
-      "whatChanged": "Це приклад формату сигналу — замінити на реальний, отриманий з pipeline.",
+      "title": "Example signal: funding spike in German ground robotics",
+      "whatChanged": "This is an example of the signal format. Replace with a real signal produced by the ingestion pipeline.",
       "evidence": "PLACEHOLDER",
       "affected": ["Germany", "Ground Robotics"],
       "date": "2026-08-01",
